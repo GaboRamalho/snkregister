@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+
+<head>
+  <meta charset="UTF-8" />
+  <title>Sneakers CRUD</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="manifest" href="manifest.json" />
+  <link rel="stylesheet" type="text/css" href="style.css" />
+
+
+  <!--Coisa do Lighthouse-->
+  <link rel="apple-touch-icon" href="/assets/img/logo-cookie.png">
+  <meta name="theme-color" content="#317EFB" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head>
+
+<body>
+  <div >
+    <a class="links" id="paracadastro"></a>
+    <a class="links" id="paralogin"></a>
+
+    <div class="content">
+      <!--FORMULÁRIO DE CADASTRO-->
+      <div class="teste" id="cadastro">
+        <form method="post" action="">
+          <h1>Sneaker Registration</h1>
+          <p>
+            <label for="name">name</label>
+            <input id="name" name="name" required="required" type="text" placeholder="Model" />
+          </p>
+          <p>
+            <label for="brand">brand</label>
+            <input id="brand" name="brand" required="required" type="text" placeholder="'Adidas'" />
+          </p>
+          <p>
+            <label for="size">size</label>
+            <input id="size" name="size" required="required" type="text" placeholder="ex. 1234" />
+          </p>
+          <p>
+            <button id="submit-button" type="button">Submit</button>
+          </p>
+        </form>
+      </div>
+      <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+    </div>
+    <!-- <script src="scripts-api/criar.js"></script> -->
+  </div>
+      <script>
+        const form = document.querySelector('form');
+        const button = document.querySelector('#submit-button');
+
+        button.addEventListener('click', (event) => {
+          event.preventDefault();
+
+          const nome = document.querySelector('#name').value;
+          const brand = document.querySelector('#brand').value;
+          const size = document.querySelector('#size').value;
+
+          axios.post('http://localhost:3000/sneaker/add', { nome, brand, size })
+            .then(response => {
+              console.log(response.data);
+              alert('Dados enviados com sucesso!');
+            })
+            .catch(error => {
+              alert('Ocorreu um erro ao enviar os dados!');
+              console.log(error);
+            });
+        });
+      </script>
+     
+
+
+     <script>
+      let newWorker;
+      if ('serviceWorker' in navigator) {
+          navigator.serviceWorker.register('./service-worker.js').then(reg => {
+              reg.addEventListener('updatefound', () => {
+                  // A wild service worker has appeared in reg.installing!
+                  newWorker = reg.installing;
+                  newWorker.addEventListener('statechange', () => {
+                      // Has network.state changed?
+                      switch (newWorker.state) {
+                          case 'installed':
+                              if (navigator.serviceWorker.controller) {
+                                  // new update available
+                                  showUpdateBar();
+                              }
+                              // No update available
+                              break;
+                      }
+                  });
+              });
+          });
+          let refreshing;
+          navigator.serviceWorker.addEventListener('controllerchange', function () {
+              if (refreshing) return;
+              window.location.reload();
+              refreshing = true;
+          });
+      }
+  </script>
+  
+    
+    
+</body>
+
+</html>
